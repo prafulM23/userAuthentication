@@ -14,6 +14,8 @@ const Sign = () => {
     const [otpbox, setotpbox] = useState(false);
     const [otp, setOtp] = useState(Array(4).fill(""));
 
+    const Backend_URL = "https://userauthentication-1-64yk.onrender.com"
+
 
     const naviagte = useNavigate()
 
@@ -39,7 +41,7 @@ const Sign = () => {
                 return setoutput("password fill")
             }
             localStorage.setItem("email", email);
-            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/sign",
+            const res = await axios.post("https://userauthentication-1.onrender.com/sign",
                 { name, phone, email, password }
             )
 
@@ -77,7 +79,7 @@ const Sign = () => {
             const getemail = localStorage.getItem("email")
             const getotp = otp.join("")
             const forgetmood = false;
-            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/verify",
+            const res = await axios.post("https://userauthentication-1.onrender.com/verify",
                 { getotp, getemail, forgetmood }
             )
             if (res.status == 200) {

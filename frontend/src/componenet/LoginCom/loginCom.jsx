@@ -29,7 +29,7 @@ const LoginCom = () => {
                 return (setoutput("Missing your password !"))
             }
             console.log(email, password)
-            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/login", { email, password })
+            const res = await axios.post("https://userauthentication-1.onrender.com/login", { email, password })
             console.log(res.data)
             if (res.status == 200) {
                 (setoutput(<p style={{ color: "green" }}>{res.data.msg}</p>));
