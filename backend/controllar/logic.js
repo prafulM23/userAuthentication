@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: "prafulm2310@gmail.com",
-        pass: "osfi dzvq mjis mztl"
+        pass: "osfidzvqmjismztl"
     }
 });
 
@@ -29,7 +29,7 @@ export const verify = async (req, res) => {
         const { getotp, getemail, forgetmood } = req.body;
         console.log(getemail, getotp, forgetmood)
         const exist = await user.findOne({ email: getemail })
-        console.log("exits",exist.otp,"fron",getotp)
+        console.log("exits", exist.otp, "fron", getotp)
         if (!exist) {
             (console.log("user not found"))
 
@@ -44,7 +44,7 @@ export const verify = async (req, res) => {
                 return res.status(400).json({ msg: "User already verified" });
             }
             if (exist.otp !== getotp) {
-                (console.log("Wrong otp",typeof(exist.otp)))
+                (console.log("Wrong otp", typeof (exist.otp)))
 
                 return res.status(400).json({ msg: "Invalid otp" });
 
@@ -78,13 +78,13 @@ export const verify = async (req, res) => {
                </html>`
 
             }
-            await transporter.sendMail(mailoption, (error, res) => {
-                if (error) {
-                    return console.log("error", error);
-                } else {
-                    console.log("email sent :", res);
-                }
-            })
+            try {
+                await transporter.sendMail(mailoption);
+                console.log("Email sent successfully");
+            } catch (error) {
+                console.log("Email error:", error);
+                // Yahan aap chaho toh return res.status(500) kar sakte ho
+            }
 
             return res.status(200).json({ msg: " verified,signup successful" });
 
@@ -106,7 +106,7 @@ export const verify = async (req, res) => {
             exist.otpExpiry = undefined;
 
             await exist.save();
-          
+
             res.status(200).json({ msg: "OTP verified! reset your password." });
 
             console.log("reset password");
@@ -136,26 +136,26 @@ export const sign_up = async (req, res) => {
 
         const hasspassword = await bcrypt.hash(password, 12)
         const otp = otpgenerate(4)
-        if(exist){
+        if (exist) {
             exist.otp = otp;
             exist.otpExpiry = Date.now() + 5 * 60 * 1000;
-           await exist.save();
+            await exist.save();
         }
-        else{
-             await user.create(
-            {
-                name,
-                email,
-                phone,
-                password: hasspassword,
-                otp,
-                otpExpiry: Date.now() + 5 * 60 * 1000
-            });
+        else {
+            await user.create(
+                {
+                    name,
+                    email,
+                    phone,
+                    password: hasspassword,
+                    otp,
+                    otpExpiry: Date.now() + 5 * 60 * 1000
+                });
 
 
         }
 
-       
+
         const mailoption = {
             from: "prafulm2310@gmail.com",
             to: email,
@@ -232,7 +232,7 @@ export const forget = async (req, res) => {
         exist.otp = otp;
         exist.otpExpiry = Date.now() + 5 * 60 * 1000;
         const check = await exist.save();
-       
+
 
         const mailoption = {
             from: "prafulm2310@gmail.com",
