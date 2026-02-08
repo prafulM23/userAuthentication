@@ -1,0 +1,21 @@
+.App-box{
+   background-image: url(../public/james-owen-fTRIaloYn8c-unsplash.jpg);
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+    height: 100vh;
+}
+*{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* h1{
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+} */

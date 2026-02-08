@@ -1,0 +1,173 @@
+/* ================= FORGET MAIN BOX ================= */
+
+.forget-box {
+    backdrop-filter: blur(50px);
+    width: 100%;
+    max-width: 500px;
+    color: cyan;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+/* ================= INPUT SECTION ================= */
+
+.forget-input-box {
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.forget-input-img {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+}
+
+.forget-input-box img {
+    width: 28px;
+    position: absolute;
+    right: 10px;
+    top: 6px;
+}
+
+.forget-input-box input {
+    outline: none;
+    width: 100%;
+    padding: 6px;
+    background: transparent;
+    border: 2px solid cyan;
+    color: black;
+    box-sizing: border-box;
+}
+
+.forget-input-box input::placeholder {
+    color: black;
+}
+
+/* ================= BUTTON ================= */
+
+.forget-btn {
+    background: transparent;
+    color: black;
+    width: 80px;
+    padding: 5px;
+    border: none;
+    border-bottom: 2px solid cyan;
+    cursor: pointer;
+}
+
+.forget-btn:focus {
+    background-color: cyan;
+}
+
+/* ================= TEXT ================= */
+
+.forget-input-box p {
+    margin-top: -10px;
+    border-bottom: 1px solid cyan;
+    width: 120px;
+}
+
+/* ================= OTP SECTION ================= */
+
+.forget-otp-box {
+    padding: 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.forget-otp {
+    border: 2px solid cyan;
+    width: 100%;
+    max-width: 60px;
+    height: 50px;
+    text-align: center;
+    outline: none;
+    font-size: 22px;
+    background: transparent;
+}
+
+/* remove number arrows */
+.forget-otp-box input::-webkit-outer-spin-button,
+.forget-otp-box input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 768px) {
+    .forget-box {
+        max-width: 450px;
+        padding: 15px;
+    }
+
+    .forget-input-box {
+        max-width: 350px;
+    }
+
+    .forget-input-img {
+        max-width: 250px;
+    }
+
+    .forget-btn {
+        width: 70px;
+        font-size: 13px;
+    }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 480px) {
+    .forget-box {
+        /* border: 2px solid red; */
+        max-width: 300px;
+        padding: 2px;
+        gap: 3px;
+
+    }
+
+    .forget-input-box {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .forget-input-box input {
+        width: 150px;
+        font-size: 10px;
+    }
+
+    .forget-input-box img {
+        width: 20px;
+    }
+
+    .forget-input-img {
+        max-width: 50%;
+    }
+
+    .btn {
+        color: white;
+        width: 90%;
+        max-width: 100px;
+        font-size: 10px;
+        /* padding: 6px; */
+    }
+
+    .forget-otp-box {
+        gap: 10px;
+    }
+
+    .forget-otp {
+        height: 45px;
+        font-size: 18px;
+    }
+}

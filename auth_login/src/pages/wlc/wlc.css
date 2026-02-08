@@ -1,0 +1,67 @@
+.wlc-box {
+    color: cyan;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.wlc-box h1 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-Size: 75px;
+    text-Shadow: 5px 15px 5px black;
+}
+
+.wlc-box h4 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-Shadow: 5px 15px 5px black;
+}
+
+@media (max-width:1024px) {
+    .wlc-box h1 {
+        font-Size: 70px;
+
+
+    }
+
+}
+
+@media (max-width:780px) {
+    .wlc-box h1 {
+        font-Size: 65px;
+
+
+    }
+
+}
+
+@media (max-width:480px) {
+    .wlc-box h1 {
+        font-Size: 50px;
+
+
+    }
+
+    .wlc-box h4 {
+        font-Size: 15px;
+
+
+    }
+
+}
+
+@media (max-width:370px) {
+    .wlc-box h1 {
+        font-Size: 40px;
+
+
+    }
+
+    .wlc-box h4 {
+        font-Size: 13px;
+
+
+    }
+
+}

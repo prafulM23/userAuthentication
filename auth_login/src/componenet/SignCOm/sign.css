@@ -1,0 +1,214 @@
+/* ===== GLOBAL SAFETY (IMPORTANT) ===== */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* ===== MAIN SIGN BOX ===== */
+.Sign-box {
+    backdrop-filter: blur(50px);
+    width: 500px;
+    color: cyan;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 10px;
+}
+
+/* ===== INPUT SECTION ===== */
+.sign-input-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.sign-input-box input {
+    border-radius: 20px;
+    outline: none;
+    width: 100%;
+    padding: 5px;
+    background: transparent;
+    border: 2px solid cyan;
+}
+
+input::placeholder {
+    color: black;
+}
+
+/* ===== BUTTON ===== */
+.sign-btn {
+    background: transparent;
+    color: black;
+    width: 150px;
+    padding: 6px;
+    border-bottom: 2px solid cyan;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.sign-btn:focus {
+    background-color: cyan;
+}
+
+/* ===== NUMBER INPUT FIX ===== */
+.num-input::-webkit-outer-spin-button,
+.num-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ===== ICON INPUT ===== */
+.sign-img-input-box {
+    position: relative;
+}
+
+.sign-img-input-box img {
+    width: 26px;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
+.sign-img-input-box input {
+    padding-right: 45px;
+}
+
+/* ===== OTP SECTION ===== */
+.sign-otp-box {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.sign-otp {
+    border: 2px solid cyan;
+    width: 60px;
+    height: 50px;
+    text-align: center;
+    outline: none;
+    font-size: 25px;
+    background: transparent;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+    .Sign-box {
+        width: 450px;
+    }
+
+    .sign-input-box {
+        width: 320px;
+    }
+}
+
+/* ===== SMALL TABLET / LARGE MOBILE ===== */
+@media (max-width: 768px) {
+    .Sign-box {
+        width: 400px;
+        padding: 15px;
+    }
+
+    .sign-input-box {
+        width: 300px;
+    }
+
+    .sign-otp {
+        width: 55px;
+        height: 45px;
+        font-size: 22px;
+    }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 480px) {
+    .Sign-box h2 {
+        font-size: 20px;
+    }
+
+    .Sign-box {
+        width: 350px;
+        padding: 15px;
+        gap: 5px;
+    }
+
+    .sign-img-input-box img {
+        width: 20px;
+        right: 40px;
+        top: 8px;
+    }
+
+    .Sign-box p {
+        font-size: 15px;
+    }
+
+    .sign-input-box input {
+        width: 90%;
+        padding: 3px;
+    }
+
+    .sign-btn {
+        color: white;
+        width: 120px;
+        font-size: 14px;
+    }
+
+    .sign-otp {
+        width: 50px;
+        height: 45px;
+        font-size: 20px;
+    }
+}
+
+/* ===== SMALL MOBILE (350px) ===== */
+@media (max-width: 350px) {
+    .Sign-box h2 {
+        font-size: 15px;
+    }
+
+    .Sign-box {
+        width: 280px;
+        padding: 10px;
+        gap: 5px;
+    }
+
+    .sign-img-input-box img {
+        width: 20px;
+        right: 10px;
+        top: 8px;
+    }
+
+    .Sign-box p {
+        font-size: 12px;
+    }
+
+    .sign-input-box {
+        width: auto;
+    }
+
+    .sign-input-box input {
+        width: 100%;
+        padding: 3px;
+    }
+
+    .sign-btn {
+        color: white;
+        width: 120px;
+        font-size: 14px;
+    }
+
+    .sign-otp {
+        width: 50px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+}
