@@ -77,7 +77,7 @@ const Sign = () => {
             const getemail = localStorage.getItem("email")
             const getotp = otp.join("")
             const forgetmood = false;
-            const res = await axios.post("https://userauthentication-wd58.onrender.com/verify",
+            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/verify",
                 { getotp, getemail, forgetmood }
             )
             if (res.status == 200) {
@@ -100,14 +100,8 @@ const Sign = () => {
             } else {
                 setoutput(<p style={{ color: "red" }}>Server not responding</p>);
             }
-
         }
-
-
     }
-
-
-
     return (
         <>
             <div className="Sign-box">
