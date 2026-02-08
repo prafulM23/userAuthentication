@@ -6,12 +6,13 @@ import crypto from "crypto"
 const jwt_key = "praful";
 
 
-
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+   host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // Port 465 ke liye true
     auth: {
         user: "prafulm2310@gmail.com",
-        pass: "osfidzvqmjismztl"
+        pass: "osfidzvqmjismztl" // Bina space ke App Password
     }
 });
 
@@ -166,14 +167,14 @@ export const sign_up = async (req, res) => {
 
 
         }
-        await transporter.sendMail(mailoption, (error, res) => {
-            if (error) {
-                return console.log("error", error);
-            } else {
-                console.log("email sent :");
-
+         try {
+                await transporter.sendMail(mailoption);
+                console.log("Email sent successfully");
+            } catch (error) {
+                console.log("Email error:", error);
+                // Yahan aap chaho toh return res.status(500) kar sakte ho
             }
-        })
+
 
         res.status(200).json({ msg: "OTP sent to email" });
 
@@ -242,14 +243,14 @@ export const forget = async (req, res) => {
                    <p>Your OTP for verification is: <b>${otp}</b></p>
              <p>This OTP will expire in 5 minutes.</p> `
         }
-        await transporter.sendMail(mailoption, (error, res) => {
-            if (error) {
-                return console.log("error", error);
-            } else {
-                console.log("forget otp  sent check your email :");
-
+         try {
+                await transporter.sendMail(mailoption);
+                console.log("Email sent successfully");
+            } catch (error) {
+                console.log("Email error:", error);
+                // Yahan aap chaho toh return res.status(500) kar sakte ho
             }
-        })
+
         res.status(200).json({ msg: "OTP sent to email " });
 
     } catch (error) {
