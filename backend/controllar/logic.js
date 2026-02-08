@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import user from "../model/connect.js"
+import user from "../model/validation.js"
 import nodemailer from "nodemailer"
 import crypto from "crypto"
 const jwt_key = "praful";

@@ -39,7 +39,7 @@ const Sign = () => {
                 return setoutput("password fill")
             }
             localStorage.setItem("email", email);
-            const res = await axios.post("http://localhost:8001/sign",
+            const res = await axios.post("https://userauthentication-wd58.onrender.com/sign",
                 { name, phone, email, password }
             )
 
@@ -77,7 +77,7 @@ const Sign = () => {
             const getemail = localStorage.getItem("email")
             const getotp = otp.join("")
             const forgetmood = false;
-            const res = await axios.post("http://localhost:8001/verify",
+            const res = await axios.post("https://userauthentication-wd58.onrender.com/verify",
                 { getotp, getemail, forgetmood }
             )
             if (res.status == 200) {
