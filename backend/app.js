@@ -9,7 +9,11 @@ connectDB();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "https://userauthentication-frontend.onrender.com",
+    methods: ["GET", "POST"],
+    credentials: true
+}));
 
 app.post("/sign", logic.sign_up)
 app.post("/login", logic.login)
@@ -20,5 +24,7 @@ app.post("/reset", logic.reset)
 app.get("/read", logic.data)
 
 
-app.listen(8001)
-console.log("server active")
+const PORT = process.env.PORT || 8001;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
