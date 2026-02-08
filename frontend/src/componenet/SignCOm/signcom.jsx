@@ -39,7 +39,7 @@ const Sign = () => {
                 return setoutput("password fill")
             }
             localStorage.setItem("email", email);
-            const res = await axios.post("https://userauthentication-wd58.onrender.com/sign",
+            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/sign",
                 { name, phone, email, password }
             )
 

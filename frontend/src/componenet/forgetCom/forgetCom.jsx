@@ -23,7 +23,7 @@ const ForgetCom = () => {
                 return (setoutput("Missing Gmail"));
             }
 
-            const res = await axios.post("https://userauthentication-wd58.onrender.com/forget", { email })
+            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/forget", { email })
             console.log(res.data)
             if (res.status == 200) {
                 setoutput(<p style={{ color: "green",width:"200px" }}>{res.data.msg}</p>)

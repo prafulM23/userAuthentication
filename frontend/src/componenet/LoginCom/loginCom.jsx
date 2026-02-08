@@ -29,7 +29,7 @@ const LoginCom = () => {
                 return (setoutput("Missing your password !"))
             }
             console.log(email, password)
-            const res = await axios.post("https://userauthentication-wd58.onrender.com/login", { email, password })
+            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/login", { email, password })
             console.log(res.data)
             if (res.status == 200) {
                 (setoutput(<p style={{ color: "green" }}>{res.data.msg}</p>));
@@ -74,10 +74,10 @@ const LoginCom = () => {
                         {/* <img style={{width:"28px",position:"absolute",right:"9px",top:"2px"}}    src="https://www.svgrepo.com/show/390427/eye-password-see-view.svg" alt="" /> */}
                         <input type={show ? "text" : "password"} placeholder="Enter your Password" value={password} onChange={(e) => { setpassword(e.target.value); setoutput(false) }} />
                     </div>
-                   <div style={{display:"flex",gap:"10px",justifyContent:"space-between",fontSize:"15px"}}>
-                     <p onClick={handleforget}>Forget Password</p>
-                    <p onClick={()=>navigate("/signup")}>SignUp !</p>
-                   </div>
+                    <div style={{ display: "flex", gap: "10px", justifyContent: "space-between", fontSize: "15px" }}>
+                        <p onClick={handleforget}>Forget Password</p>
+                        <p onClick={() => navigate("/signup")}>SignUp !</p>
+                    </div>
                 </div>
                 <button className="login-btn" onClick={handlelogin}>Login!</button>
 
