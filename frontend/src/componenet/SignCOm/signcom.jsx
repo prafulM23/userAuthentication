@@ -1,5 +1,5 @@
 import { useState } from "react"
-import "./Sign.css"
+import "./sign.css"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import OtpInput from "../OtpInput/OtpInput"
