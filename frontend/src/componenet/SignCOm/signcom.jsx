@@ -19,12 +19,10 @@ const Sign = () => {
     useEffect(() => {
         const read = async () => {
             try {
-                const res = await axios.get("https://userauthentication-1-64yk.onrender.com/read")
+                const res = await axios.get(`${Backend_URL}/read`)
                 console.log(res.data)
-
             } catch (error) {
                 console.log("backend error =  ", error)
-
             }
         }
         read()
@@ -55,7 +53,7 @@ const Sign = () => {
                 return setoutput("password fill")
             }
             localStorage.setItem("email", email);
-            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/sign",
+            const res = await axios.post(`${Backend_URL}/sign`,
                 { name, phone, email, password }
             )
 
@@ -93,7 +91,7 @@ const Sign = () => {
             const getemail = localStorage.getItem("email")
             const getotp = otp.join("")
             const forgetmood = false;
-            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/verify",
+            const res = await axios.post(`${Backend_URL}/verify`,
                 { getotp, getemail, forgetmood }
             )
             if (res.status == 200) {
