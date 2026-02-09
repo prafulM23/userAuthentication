@@ -9,11 +9,14 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+
 app.use(cors({
     origin: "https://userauthentication-frontend.onrender.com",
-    methods: ["GET", "POST"],
-    credentials: true
+    methods: ["GET", "POST", "PUT", "DELETE"],
 }));
+
+
+
 
 app.post("/sign", logic.sign_up)
 app.post("/login", logic.login)

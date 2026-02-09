@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./sign.css"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
@@ -15,6 +15,22 @@ const Sign = () => {
     const [otp, setOtp] = useState(Array(4).fill(""));
 
     const Backend_URL = "https://userauthentication-1-64yk.onrender.com"
+    
+    useEffect(() => {
+        const read = async () => {
+            try {
+                const res = await axios.get("https://userauthentication-1-64yk.onrender.com/read")
+                console.log(res.data)
+
+            } catch (error) {
+                console.log("backend error =  ", error)
+
+            }
+        }
+
+        read()
+
+    }, [])
 
 
     const naviagte = useNavigate()
@@ -41,7 +57,7 @@ const Sign = () => {
                 return setoutput("password fill")
             }
             localStorage.setItem("email", email);
-            const res = await axios.post("https://userauthentication-1.onrender.com/sign",
+            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/sign",
                 { name, phone, email, password }
             )
 
@@ -79,7 +95,7 @@ const Sign = () => {
             const getemail = localStorage.getItem("email")
             const getotp = otp.join("")
             const forgetmood = false;
-            const res = await axios.post("https://userauthentication-1.onrender.com/verify",
+            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/verify",
                 { getotp, getemail, forgetmood }
             )
             if (res.status == 200) {
