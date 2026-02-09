@@ -104,7 +104,7 @@ const ForgetCom = () => {
             const getemail = localStorage.getItem("email")
 
             console.log(newpass, "and", confirmpass, "and", getemail)
-            const res = await axios.post("http://localhost:8001/reset", { newpass, getemail })
+            const res = await axios.post(`${Backend_URL}/reset`, { newpass, getemail })
             console.log(res.data)
             if (res.status == 200) {
                 setoutput(<p style={{ color: "green", width: "200px" }}>{res.data.msg}</p>)

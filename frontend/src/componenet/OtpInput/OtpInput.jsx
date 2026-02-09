@@ -20,9 +20,9 @@ const OtpInput = ({ length = 4, otp, setOtp }) => {
         }
 
         // Submit when all inputs are filled
-        if (newOtp.join("").length === length) {
-            setOtp(newOtp.join(""));
-        }
+        // if (newOtp.join("").length === length) {
+        //     setOtp(newOtp.join(""));
+        // }
     };
 
     // Handle Backspace
