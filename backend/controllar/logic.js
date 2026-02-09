@@ -7,15 +7,10 @@ const jwt_key = "praful";
 
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587, // 465 ki jagah 587 use karein
-    secure: false, // 587 ke liye false hona chahiye
+    service: 'gmail', // Ye likhne se host aur port apne aap manage ho jate hain
     auth: {
         user: "prafulm2310@gmail.com",
-        pass: "osfidzvqmjismztl" 
-    },
-    tls: {
-        rejectUnauthorized: false // Isse connection stable hota hai
+        pass: "osfidzvqmjismztl" // Bina space wala password
     }
 });
 
