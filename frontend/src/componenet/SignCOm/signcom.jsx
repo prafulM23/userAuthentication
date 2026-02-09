@@ -15,7 +15,7 @@ const Sign = () => {
     const [otp, setOtp] = useState(Array(4).fill(""));
 
     const Backend_URL = "https://userauthentication-1-64yk.onrender.com"
-    
+
     useEffect(() => {
         const read = async () => {
             try {
@@ -27,9 +27,7 @@ const Sign = () => {
 
             }
         }
-
         read()
-
     }, [])
 
 
