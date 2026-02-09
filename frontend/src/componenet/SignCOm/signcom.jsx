@@ -26,7 +26,7 @@ const Sign = () => {
             }
         }
         read()
-    }, [])
+    },[])
 
 
     const naviagte = useNavigate()

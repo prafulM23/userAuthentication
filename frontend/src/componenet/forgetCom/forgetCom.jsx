@@ -15,7 +15,7 @@ const ForgetCom = () => {
     const [confirmpass, setconfirmpass] = useState("");
     const navigate = useNavigate()
 
-
+    const Backend_URL = "https://userauthentication-1-64yk.onrender.com"
 
     const getotp = async () => {
         try {
@@ -23,14 +23,14 @@ const ForgetCom = () => {
                 return (setoutput("Missing Gmail"));
             }
 
-            const res = await axios.post("https://userauthentication-1-64yk.onrender.com/forget", { email })
+            const res = await axios.post(`${Backend_URL}/forget`, { email })
             console.log(res.data)
             if (res.status == 200) {
-                setoutput(<p style={{ color: "green",width:"200px" }}>{res.data.msg}</p>)
+                setoutput(<p style={{ color: "green", width: "200px" }}>{res.data.msg}</p>)
                 setemail("")
                 setotpbox(true)
             } else {
-                setoutput(<p style={{ color: "red",width:"200px" }}>{res.data.msg}</p>)
+                setoutput(<p style={{ color: "red", width: "200px" }}>{res.data.msg}</p>)
 
             }
 
@@ -40,12 +40,12 @@ const ForgetCom = () => {
             console.log(error);
             if (error.response) {
                 setoutput(
-                    <p style={{ color: "red",width:"200px" }}>
+                    <p style={{ color: "red", width: "200px" }}>
                         {error.response.data.msg || "Invalid otp"}
                     </p>
                 );
             } else {
-                setOutput(<p style={{ color: "red",width:"200px" }}>Server not responding</p>);
+                setOutput(<p style={{ color: "red", width: "200px" }}>Server not responding</p>);
             }
         }
 
@@ -56,27 +56,27 @@ const ForgetCom = () => {
             const getemail = localStorage.getItem("email")
             const forgetmood = true;
             const getotp = otp.join("")
-            const res = await axios.post("http://localhost:8001/verify",
+            const res = await axios.post(`${Backend_URL}/verify`,
                 { getotp, getemail, forgetmood }
             )
             if (res.status == 200) {
-                setoutput(<p style={{ color: "red",width:"200px" }}> Reset Password</p>)
+                setoutput(<p style={{ color: "red", width: "200px" }}> Reset Password</p>)
                 setreset(true);
             }
             else {
-                setoutput(<p style={{ color: "red",width:"200px" }}>{res.data.msg}</p>)
+                setoutput(<p style={{ color: "red", width: "200px" }}>{res.data.msg}</p>)
             }
 
         } catch (error) {
             console.log(error);
             if (error.response) {
                 setoutput(
-                    <p style={{ color: "red",width:"200px" }}>
+                    <p style={{ color: "red", width: "200px" }}>
                         {error.response.data.msg || "Invalid OTP"}
                     </p>
                 );
             } else {
-                setoutput(<p style={{ color: "red",width:"200px" }}>Server not responding</p>);
+                setoutput(<p style={{ color: "red", width: "200px" }}>Server not responding</p>);
             }
         }
 
@@ -107,7 +107,7 @@ const ForgetCom = () => {
             const res = await axios.post("http://localhost:8001/reset", { newpass, getemail })
             console.log(res.data)
             if (res.status == 200) {
-                setoutput(<p style={{ color: "green",width:"200px" }}>{res.data.msg}</p>)
+                setoutput(<p style={{ color: "green", width: "200px" }}>{res.data.msg}</p>)
                 navigate("/login")
                 setconfirmpass("")
                 setnewpass("")
@@ -118,12 +118,12 @@ const ForgetCom = () => {
             console.log(error);
             if (error.response) {
                 setoutput(
-                    <p style={{ color: "red",width:"200px" }}>
+                    <p style={{ color: "red", width: "200px" }}>
                         {error.response.data.msg || "Invalid OTP"}
                     </p>
                 );
             } else {
-                setoutput(<p style={{ color: "red",width:"200px" }}>Server not responding</p>);
+                setoutput(<p style={{ color: "red", width: "200px" }}>Server not responding</p>);
             }
 
         }
@@ -155,7 +155,7 @@ const ForgetCom = () => {
                             reset ? <div className="forget-input-box" >
                                 <h3>Reset Your Password</h3>
                                 {
-                                    output ? <p style={{ color: "red",width:"200px" }}>{output}</p> : ""
+                                    output ? <p style={{ color: "red", width: "200px" }}>{output}</p> : ""
                                 }
                                 <div style={{ position: "relative" }}>
                                     <img onClick={show1 ? handleshow1 : handlehide1} src={show1 ? "https://www.svgrepo.com/show/380010/eye-password-show.svg" : "https://www.svgrepo.com/show/390427/eye-password-see-view.svg"} alt={show1 ? "show eye" : "hide eye"} />

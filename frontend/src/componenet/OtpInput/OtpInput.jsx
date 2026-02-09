@@ -21,7 +21,7 @@ const OtpInput = ({ length = 4, otp, setOtp }) => {
 
         // Submit when all inputs are filled
         if (newOtp.join("").length === length) {
-            onOtpSubmit(newOtp.join(""));
+            setOtp(newOtp.join(""));
         }
     };
 
