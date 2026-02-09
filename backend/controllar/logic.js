@@ -1,24 +1,13 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import user from "../model/validation.js"
-import nodemailer from "nodemailer"
+// import nodemailer from "nodemailer"
 import crypto from "crypto"
 const jwt_key = "praful";
+import { Resend } from "resend"
 
+const resend = new Resend('re_eHVpVUF3_EpzZeSGmweX1kG8WofGMzLhA');
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: "prafulm2310@gmail.com",
-        pass: "osfidzvqmjismztl"
-    },
-    tls: {
-        ciphers: 'SSLv3', // Kuch servers purane ciphers mangte hain
-        rejectUnauthorized: false
-    }
-});
 
 const otpgenerate = (length = 4) => {
     let otp = "";
@@ -67,11 +56,14 @@ export const verify = async (req, res) => {
 
             await exist.save();
 
-            const mailoption = {
-                from: "prafulm2310@gmail.com",
-                to: getemail,
-                subject: "Welcome to our User Authentication System ",
-                html: `
+
+            // --- RESEND EMAIL LOGIC ---
+            try {
+                await resend.emails.send({
+                    from: 'onboarding@resend.dev',
+                    to:  getemail,
+                    subject: "Welcome to our User Authentication System ",
+                    html: `
                 <!DOCTYPE html>
                <html>
                <body style="font-family: Arial, sans-serif;">
@@ -81,32 +73,24 @@ export const verify = async (req, res) => {
                <p style="margin-top:20px;">Best Regards,<br> User Authentication System 🚀</p>
                </body>
                </html>`
+                });
 
-            }
-            try {
-                await transporter.sendMail(mailoption);
-                console.log("Email sent successfully");
-            } catch (error) {
-                console.log("Email error:", error);
-                // Yahan aap chaho toh return res.status(500) kar sakte ho
+                console.log("Email sent via Resend API");
+            } catch (mailError) {
+                console.log("Mail Error:", mailError);
             }
 
             return res.status(200).json({ msg: " verified,signup successful" });
-
         }
 
         else {
 
             if (exist.otp !== getotp) {
                 return res.status(400).json({ msg: "Invalid otp" });
-
             }
             if (Date.now() > exist.otpExpiry) {
                 return res.status(400).json({ msg: "expired otp" });
-
             }
-
-
             exist.otp = undefined;
             exist.otpExpiry = undefined;
 
@@ -118,11 +102,8 @@ export const verify = async (req, res) => {
         }
 
     } catch (error) {
-
         console.log("error", error)
         return res.status(500).json({ msg: "Internal server error" });
-
-
     }
 
 
@@ -136,9 +117,6 @@ export const sign_up = async (req, res) => {
             return res.status(400).json({ msg: "User already exists and verified" });
 
         }
-
-
-
         const hasspassword = await bcrypt.hash(password, 12)
         const otp = otpgenerate(4)
         if (exist) {
@@ -161,28 +139,22 @@ export const sign_up = async (req, res) => {
         }
 
 
-        const mailoption = {
-            from: "prafulm2310@gmail.com",
-            to: email,
-            subject: "Verify your gmail - User Authentication System ",
-            html: ` <p> Hello ${name} 🎉</p>
-                   <p>Your OTP for verification is: <b>${otp}</b></p>
-             <p>This OTP will expire in 5 minutes.</p> `
-
-
-        }
+        // --- RESEND EMAIL LOGIC ---
         try {
-            await transporter.sendMail(mailoption);
-            console.log("Email sent successfully");
-        } catch (error) {
-            console.log("Email error:", error);
-            // Yahan aap chaho toh return res.status(500) kar sakte ho
+            await resend.emails.send({
+                from: 'onboarding@resend.dev',
+                to: email,
+                subject: 'Verify your Gmail - User System',
+                html: `<p>Hello ${name} 🎉</p><p>Your OTP is: <b>${otp}</b></p>`
+            });
+            console.log("Email sent via Resend API");
+
+        } catch (mailError) {
+            console.log("Mail Error:", mailError);
         }
 
 
         res.status(200).json({ msg: "OTP sent to email" });
-
-
 
     } catch (error) {
         res.status(500).json({ msg: "Backend error" });
@@ -238,23 +210,20 @@ export const forget = async (req, res) => {
         exist.otpExpiry = Date.now() + 5 * 60 * 1000;
         const check = await exist.save();
 
-
-        const mailoption = {
-            from: "prafulm2310@gmail.com",
-            to: email,
-            subject: "Password Reset OTP - User Authentication System ",
-            html: ` <p> Hello ${exist.name} 🎉</p>
+        // --- RESEND EMAIL LOGIC ---
+        try {
+            await resend.emails.send({
+                from: 'onboarding@resend.dev',
+                to: email,
+                subject: "Password Reset OTP - User Authentication System ",
+                html: ` <p> Hello ${exist.name} 🎉</p>
                    <p>Your OTP for verification is: <b>${otp}</b></p>
              <p>This OTP will expire in 5 minutes.</p> `
+            });
+            console.log("Email sent via Resend API");
+        } catch (mailError) {
+            console.log("Mail Error:", mailError);
         }
-        try {
-            await transporter.sendMail(mailoption);
-            console.log("Email sent successfully");
-        } catch (error) {
-            console.log("Email error:", error);
-            // Yahan aap chaho toh return res.status(500) kar sakte ho
-        }
-
         res.status(200).json({ msg: "OTP sent to email " });
 
     } catch (error) {
