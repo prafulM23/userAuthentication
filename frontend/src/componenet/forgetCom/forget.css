@@ -126,48 +126,53 @@
 
 /* ================= MOBILE ================= */
 
-@media (max-width: 480px) {
-    .forget-box {
-        /* border: 2px solid red; */
-        max-width: 300px;
-        padding: 2px;
-        gap: 3px;
+/* ================= MOBILE FIXED ================= */
 
+@media (max-width: 480px) {
+
+    .forget-box {
+        max-width: 95%;
+        padding: 10px;
+        gap: 10px;
     }
 
     .forget-input-box {
-        flex-direction: column;
+        width: 100%;
         align-items: center;
-        gap: 8px;
+    }
+
+    .forget-input-img {
+        width: 100%;
+        max-width: 100%;
     }
 
     .forget-input-box input {
-        width: 150px;
-        font-size: 10px;
+        width: 100%; /* ❗ important */
+        font-size: 14px;
+        padding: 8px;
     }
 
     .forget-input-box img {
         width: 20px;
+        top: 8px;
     }
 
-    .forget-input-img {
-        max-width: 50%;
-    }
-
-    .btn {
-        color: white;
-        width: 90%;
-        max-width: 100px;
-        font-size: 10px;
-        /* padding: 6px; */
+    .forget-btn {
+        width: 100%;
+        max-width: 120px;
+        font-size: 14px;
+        padding: 6px;
     }
 
     .forget-otp-box {
-        gap: 10px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        width: 100%;
     }
 
     .forget-otp {
-        height: 45px;
-        font-size: 18px;
+        width: 100%;
+        height: 40px;
+        font-size: 16px;
     }
 }
