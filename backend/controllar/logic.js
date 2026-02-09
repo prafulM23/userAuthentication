@@ -7,10 +7,16 @@ const jwt_key = "praful";
 
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Ye likhne se host aur port apne aap manage ho jate hain
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
         user: "prafulm2310@gmail.com",
-        pass: "osfidzvqmjismztl" // Bina space wala password
+        pass: "osfidzvqmjismztl"
+    },
+    tls: {
+        ciphers: 'SSLv3', // Kuch servers purane ciphers mangte hain
+        rejectUnauthorized: false
     }
 });
 
@@ -165,13 +171,13 @@ export const sign_up = async (req, res) => {
 
 
         }
-         try {
-                await transporter.sendMail(mailoption);
-                console.log("Email sent successfully");
-            } catch (error) {
-                console.log("Email error:", error);
-                // Yahan aap chaho toh return res.status(500) kar sakte ho
-            }
+        try {
+            await transporter.sendMail(mailoption);
+            console.log("Email sent successfully");
+        } catch (error) {
+            console.log("Email error:", error);
+            // Yahan aap chaho toh return res.status(500) kar sakte ho
+        }
 
 
         res.status(200).json({ msg: "OTP sent to email" });
@@ -241,13 +247,13 @@ export const forget = async (req, res) => {
                    <p>Your OTP for verification is: <b>${otp}</b></p>
              <p>This OTP will expire in 5 minutes.</p> `
         }
-         try {
-                await transporter.sendMail(mailoption);
-                console.log("Email sent successfully");
-            } catch (error) {
-                console.log("Email error:", error);
-                // Yahan aap chaho toh return res.status(500) kar sakte ho
-            }
+        try {
+            await transporter.sendMail(mailoption);
+            console.log("Email sent successfully");
+        } catch (error) {
+            console.log("Email error:", error);
+            // Yahan aap chaho toh return res.status(500) kar sakte ho
+        }
 
         res.status(200).json({ msg: "OTP sent to email " });
 
