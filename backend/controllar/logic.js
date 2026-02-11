@@ -1,21 +1,11 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import user from "../model/validation.js"
-import nodemailer from "nodemailer"
+// import nodemailer from "nodemailer"
 import crypto from "crypto"
 const jwt_key = "praful";
-// import { Resend } from "resend";
-
-// const resend = new Resend('re_eHVpVUF3_EpzZeSGmweX1kG8WofGMzLhA');
-
-const transporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    auth: {
-        user: "a20048001@smtp-brevo.com",
-        pass: process.env.BREVO_PASS
-    },
-});
+import { Resend } from "resend";
+const resend = new Resend('re_eHVpVUF3_EpzZeSGmweX1kG8WofGMzLhA');
 
 
 const otpgenerate = (length = 4) => {
@@ -67,26 +57,24 @@ export const verify = async (req, res) => {
 
 
             // --- RESEND EMAIL LOGIC ---
-            const mailOption = {
-                from: "prafulm2310@gmail.com",
-                to: getemail,
-                subject: "Welcome to our User Authentication System ",
-                html: `
+            try {
+                await resend.emails.send({
+                    from: 'onboarding@resend.dev',
+                    to:  getemail,
+                    subject: "Welcome to our User Authentication System ",
+                    html: `
                 <!DOCTYPE html>
                <html>
                <body style="font-family: Arial, sans-serif;">
                <h2>Welcome, ${exist.name}! 🎉</h2>
                <p>Thank you for signing up with <b>User Authentication System</b>.</p>
-
+        
                <p style="margin-top:20px;">Best Regards,<br> User Authentication System 🚀</p>
                </body>
                </html>`
+                });
 
-            }
-            try {
-                await transporter.sendMail(mailOption);
-                console.log("successfully verify")
-
+                console.log("Email sent via Resend API");
             } catch (mailError) {
                 console.log("Mail Error:", mailError);
             }
@@ -151,25 +139,17 @@ export const sign_up = async (req, res) => {
 
 
         // --- RESEND EMAIL LOGIC ---
-        const mailOptions = {
-            from: "prafulm2310@gmail.com",
-            to: email,
-            subject: "Your Account Verification OTP",
-            html: `
-        <div style="font-family: Arial, sans-serif; text-align: center;">
-            <h2>Welcome to My Project</h2>
-            <p>Your verification code is:</p>
-            <h1 style="color: #007bff;">${otp}</h1>
-            <p>This OTP is valid for 10 minutes.</p>
-        </div>
-    `,
-        };
         try {
-            await transporter.sendMail(mailOptions);
-            console.log("Email sent successfully to:", email);
-        } catch (error) {
-            console.log("Email error:", error);
-            throw error;
+            await resend.emails.send({
+                from: 'onboarding@resend.dev',
+                to: email,
+                subject: 'Verify your Gmail - User System',
+                html: `<p>Hello ${name} 🎉</p><p>Your OTP is: <b>${otp}</b></p>`
+            });
+            console.log("Email sent via Resend API");
+
+        } catch (mailError) {
+            console.log("Mail Error:", mailError);
         }
 
 
@@ -230,20 +210,18 @@ export const forget = async (req, res) => {
         const check = await exist.save();
 
         // --- RESEND EMAIL LOGIC ---
-        const mailOptions = {
-            from: "prafulm2310@gmail.com",
-            to: email,
-            subject: "Password Reset OTP - User Authentication System ",
-            html: ` <p> Hello ${exist.name} 🎉</p>
+        try {
+            await resend.emails.send({
+                from: 'onboarding@resend.dev',
+                to: email,
+                subject: "Password Reset OTP - User Authentication System ",
+                html: ` <p> Hello ${exist.name} 🎉</p>
                    <p>Your OTP for verification is: <b>${otp}</b></p>
              <p>This OTP will expire in 5 minutes.</p> `
-        };
-        try {
-            await transporter.sendMail(mailOptions);
-            console.log("Email sent successfully to:", email);
-        } catch (error) {
-            console.log("Email error:", error);
-            throw error;
+            });
+            console.log("Email sent via Resend API");
+        } catch (mailError) {
+            console.log("Mail Error:", mailError);
         }
         res.status(200).json({ msg: "OTP sent to email " });
 
