@@ -4,8 +4,7 @@ import user from "../model/validation.js"
 // import nodemailer from "nodemailer"
 import crypto from "crypto"
 const jwt_key = "praful";
-import { Resend } from "resend"
-
+import { Resend } from "resend";
 const resend = new Resend('re_eHVpVUF3_EpzZeSGmweX1kG8WofGMzLhA');
 
 
