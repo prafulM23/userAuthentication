@@ -69,9 +69,8 @@ const Sign = () => {
             setLoading(true)
             const getemail = localStorage.getItem("email")
             const getotp = otp.join("")
-            const forgetmood = false;
             const res = await axios.post(`${Backend_URL}/verify`,
-                { getotp, getemail, forgetmood }
+                { getotp, getemail }
             )
             if (res.status == 200) {
                 setoutput(<p style={{ color: "green" }}>{res.data.msg}</p>)
