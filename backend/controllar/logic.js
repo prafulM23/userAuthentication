@@ -1,12 +1,9 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import user from "../model/validation.js"
-// import nodemailer from "nodemailer"
+import nodemailer from "nodemailer"
 import crypto from "crypto"
-const jwt_key = "praful";
-import { Resend } from "resend";
-const resend = new Resend('re_eHVpVUF3_EpzZeSGmweX1kG8WofGMzLhA');
-
+import { JWT_KEY, APP_PASS, APP_USER } from "../config/env.js"
 
 const otpgenerate = (length = 4) => {
     let otp = "";
@@ -16,74 +13,70 @@ const otpgenerate = (length = 4) => {
     return otp
 }
 
+const transportar = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: APP_USER,
+        pass: APP_PASS
+    }
+})
+
 
 export const verify = async (req, res) => {
     try {
-        const { getotp, getemail, forgetmood } = req.body;
-        console.log(getemail, getotp, forgetmood)
+        const { getotp, getemail, isforgetMood } = req.body;
+        if (!getotp || !getemail) {
+            return res.status(400).json({ msg: "Missing Data" });
+        }
         const exist = await user.findOne({ email: getemail })
-        console.log("exits", exist.otp, "fron", getotp)
+
         if (!exist) {
             (console.log("user not found"))
-
             return res.status(404).json({ msg: "user not found" });
         }
 
-        if (!forgetmood) {
+        if (!isforgetMood) {
 
             if (exist.isVerified) {
-                (console.log("User already verified"))
-
                 return res.status(400).json({ msg: "User already verified" });
             }
+
             if (exist.otp !== getotp) {
-                (console.log("Wrong otp", typeof (exist.otp)))
-
-                return res.status(400).json({ msg: "Invalid otp" });
-
+                return res.status(400).json({ msg: "Wrong otp", otp: getotp });
             }
+
             if (Date.now() > exist.otpExpiry) {
-                (console.log("time out otp"))
-
                 return res.status(400).json({ msg: "expired otp" });
-
             }
 
             exist.isVerified = true;
             exist.otp = undefined;
             exist.otpExpiry = undefined;
-
             await exist.save();
 
-
-            // --- RESEND EMAIL LOGIC ---
-            try {
-                await resend.emails.send({
-                    from: 'onboarding@resend.dev',
-                    to:  getemail,
-                    subject: "Welcome to our User Authentication System ",
-                    html: `
+            const mailoption = {
+                from: "prafulm2310@gmail.com",
+                to: getemail,
+                subject: "Welcome to our User Authentication System ",
+                html: `
                 <!DOCTYPE html>
                <html>
                <body style="font-family: Arial, sans-serif;">
                <h2>Welcome, ${exist.name}! 🎉</h2>
                <p>Thank you for signing up with <b>User Authentication System</b>.</p>
-        
                <p style="margin-top:20px;">Best Regards,<br> User Authentication System 🚀</p>
                </body>
                </html>`
-                });
-
-                console.log("Email sent via Resend API");
-            } catch (mailError) {
-                console.log("Mail Error:", mailError);
             }
+            try {
+                const resMail = await transportar.sendMail(mailoption)
+                return res.status(200).json({ msg: " verified, signup successful" });
 
-            return res.status(200).json({ msg: " verified,signup successful" });
+            } catch (error) {
+                return res.status(400).json({ msg: "Mail Server Not Response" });
+            }
         }
-
         else {
-
             if (exist.otp !== getotp) {
                 return res.status(400).json({ msg: "Invalid otp" });
             }
@@ -92,26 +85,24 @@ export const verify = async (req, res) => {
             }
             exist.otp = undefined;
             exist.otpExpiry = undefined;
-
             await exist.save();
-
             res.status(200).json({ msg: "OTP verified! reset your password." });
-
-            console.log("reset password");
         }
 
     } catch (error) {
-        console.log("error", error)
         return res.status(500).json({ msg: "Internal server error" });
     }
-
-
 }
+
 export const sign_up = async (req, res) => {
     try {
-        const { name, email, phone, password } = req.body;
-        const exist = await user.findOne({ email })
+        const { name, email, password } = req.body;
 
+        if (!email || !name || !password) {
+            return res.status(400).json({ msg: "Missing Data" });
+        }
+
+        const exist = await user.findOne({ email })
         if (exist && exist.isVerified) {
             return res.status(400).json({ msg: "User already exists and verified" });
 
@@ -128,43 +119,40 @@ export const sign_up = async (req, res) => {
                 {
                     name,
                     email,
-                    phone,
                     password: hasspassword,
                     otp,
                     otpExpiry: Date.now() + 5 * 60 * 1000
                 });
-
-
         }
 
+        const mailoption = {
+            from: "prafulm2310@gmail.com",
+            to: email,
+            subject: 'Verify your Gmail - User System',
+            html: `<p>Hello ${name} 🎉</p><p>Your OTP is: <b>${otp}</b></p>`
 
-        // --- RESEND EMAIL LOGIC ---
+        }
         try {
-            await resend.emails.send({
-                from: 'onboarding@resend.dev',
-                to: email,
-                subject: 'Verify your Gmail - User System',
-                html: `<p>Hello ${name} 🎉</p><p>Your OTP is: <b>${otp}</b></p>`
-            });
-            console.log("Email sent via Resend API");
-
-        } catch (mailError) {
-            console.log("Mail Error:", mailError);
+            const resMail = await transportar.sendMail(mailoption)
+            res.status(200).json({ msg: "OTP sent to email" });
+        } catch (error) {
+            return res.status(400).json({ msg: "Mail Server Not Response" });
         }
-
-
-        res.status(200).json({ msg: "OTP sent to email" });
 
     } catch (error) {
         res.status(500).json({ msg: "Backend error" });
-        console.log("post api error", error)
 
     }
 }
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ msg: "Missing Data" });
+        }
         const exist = await user.findOne({ email })
+
         if (!exist) {
             return res.status(404).json({ msg: "user not found" });
         }
@@ -172,32 +160,35 @@ export const login = async (req, res) => {
         if (!exist.isVerified) {
             return res.status(400).json({ msg: "User not verified" });
         }
+
         const match = await bcrypt.compare(password, exist.password)
         if (!match) {
             return res.status(400).json({ msg: "Invalid credentials" });
         }
 
-        const token = jwt.sign({ email }, jwt_key, { expiresIn: "1h" });
-        console.log(token)
+        const token = jwt.sign({ email }, JWT_KEY, { expiresIn: "1h" });
         res.status(200).json({ msg: "Login successful", token });
 
     } catch (error) {
-        console.log("error login", error)
         res.status(500).json({ msg: "Internal server error" });
 
     }
 }
 
 export const data = async (req, res) => {
-    // const data = await user.find().select("-password")
-    const data = await user.find()
+    const data = await user.find().select("-password -otp -otpExpiry")
     res.send(data)
-
 }
+
 export const forget = async (req, res) => {
     try {
         const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ msg: "Missing Data" });
+        }
         const exist = await user.findOne({ email })
+
         if (!exist) {
             return res.status(404).json({ msg: "user not found" });
         }
@@ -208,52 +199,50 @@ export const forget = async (req, res) => {
         exist.otp = otp;
         exist.otpExpiry = Date.now() + 5 * 60 * 1000;
         const check = await exist.save();
+        console.log("verifyyy", check)
 
-        // --- RESEND EMAIL LOGIC ---
-        try {
-            await resend.emails.send({
-                from: 'onboarding@resend.dev',
-                to: email,
-                subject: "Password Reset OTP - User Authentication System ",
-                html: ` <p> Hello ${exist.name} 🎉</p>
+        const mailoption = {
+            from: "prafulm2310@gmail.com",
+            to: email,
+            subject: "Password Reset OTP - User Authentication System ",
+            html: ` <p> Hello ${exist.name} 🎉</p>
                    <p>Your OTP for verification is: <b>${otp}</b></p>
              <p>This OTP will expire in 5 minutes.</p> `
-            });
-            console.log("Email sent via Resend API");
-        } catch (mailError) {
-            console.log("Mail Error:", mailError);
         }
-        res.status(200).json({ msg: "OTP sent to email " });
+        try {
+            const resMail = await transportar.sendMail(mailoption)
+            res.status(200).json({ msg: "OTP sent to email " });
+
+        } catch (error) {
+            return res.status(400).json({ msg: "Mail Server Not Response" });
+        }
 
     } catch (error) {
         res.status(500).json({ msg: "Internal server error" });
     }
-
 }
 
 
 export const reset = async (req, res) => {
     try {
         const { newpass, getemail } = req.body
-        console.log(getemail)
+
+        if (!newpass || !getemail) {
+            return res.status(400).json({ msg: "Missing Data" });
+        }
 
         const exist = await user.findOne({ email: getemail })
-        console.log(exist)
+
         if (!exist) {
             return res.status(404).json({ msg: "user not found" });
         }
+
         const hasspassword = await bcrypt.hash(newpass, 10)
-
         const updatedata = await user.findOneAndUpdate({ email: getemail }, { $set: { password: hasspassword } })
-        console.log("updateduser = > ", updatedata)
-
         res.status(200).json({ msg: "Reset password done" });
+
     } catch (error) {
         res.status(500).json({ msg: "Internal server error" });
-
-        console.log(error)
-
-
     }
 
 }

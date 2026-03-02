@@ -1,17 +1,13 @@
-/* ===== GLOBAL SAFETY (IMPORTANT) ===== */
-* {
-    box-sizing: border-box;
+.sign-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-html,
-body {
-    width: 100%;
-    overflow-x: hidden;
-}
-
-/* ===== MAIN SIGN BOX ===== */
 .Sign-box {
-    backdrop-filter: blur(50px);
+    /* backdrop-filter: blur(50px); */
+    box-shadow: 1px 2px 5px black;
     width: 500px;
     color: cyan;
     display: flex;
@@ -24,23 +20,24 @@ body {
 
 /* ===== INPUT SECTION ===== */
 .sign-input-box {
+    width: 400px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 15px;
 }
 
 .sign-input-box input {
-    border-radius: 20px;
+    border-radius: 10px;
     outline: none;
     width: 100%;
     padding: 5px;
     background: transparent;
     border: 2px solid cyan;
+    overflow: hidden;
 }
 
 input::placeholder {
-    color: black;
+    color: white;
 }
 
 /* ===== BUTTON ===== */
@@ -89,16 +86,6 @@ input::placeholder {
     gap: 15px;
 }
 
-.sign-otp {
-    border: 2px solid cyan;
-    width: 60px;
-    height: 50px;
-    text-align: center;
-    outline: none;
-    font-size: 25px;
-    background: transparent;
-}
-
 /* ===== TABLET ===== */
 @media (max-width: 1024px) {
     .Sign-box {
@@ -112,6 +99,10 @@ input::placeholder {
 
 /* ===== SMALL TABLET / LARGE MOBILE ===== */
 @media (max-width: 768px) {
+    .btn {
+        color: white;
+    }
+
     .Sign-box {
         width: 400px;
         padding: 15px;
@@ -141,9 +132,9 @@ input::placeholder {
     }
 
     .sign-img-input-box img {
-        width: 20px;
-        right: 40px;
-        top: 8px;
+        /* width: 20px; */
+        /* right: 40px; */
+        top: 4px;
     }
 
     .Sign-box p {
@@ -151,7 +142,7 @@ input::placeholder {
     }
 
     .sign-input-box input {
-        width: 90%;
+        width: 100%;
         padding: 3px;
     }
 

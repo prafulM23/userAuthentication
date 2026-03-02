@@ -7,7 +7,6 @@ import Forget from "./pages/forget"
 import Wlc from "./pages/wlc/wlc"
 import ProtectRoutes from "./pages/protectRoutes"
 const App = () => {
-  const token = localStorage.getItem("token")
   return (
     <>
 
@@ -46,14 +45,8 @@ const App = () => {
             <ProtectRoutes>
               <Wlc />
             </ProtectRoutes>
-
           }></Route>
-
-
         </Routes>
-
-
-
       </div>
 
     </>

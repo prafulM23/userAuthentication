@@ -3,7 +3,6 @@ import "./wlc.css"
 const Wlc = () => {
     const navigate = useNavigate("")
     const token = localStorage.getItem("token")
-    console.log("wlcome",token)
     const handleremove = () => {
         localStorage.removeItem("token")
         navigate("/login")

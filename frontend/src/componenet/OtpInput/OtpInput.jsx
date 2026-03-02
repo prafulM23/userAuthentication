@@ -2,9 +2,6 @@ import React, { useState, useRef } from "react";
 
 const OtpInput = ({ length = 4, otp, setOtp }) => {
     const inputRefs = useRef([]);
-
-    console.log(otp, "TESTed")
-
     // Handle input change
     const handleChange = (element, index) => {
         if (isNaN(element.value)) return; // Only numbers allowed
@@ -18,11 +15,6 @@ const OtpInput = ({ length = 4, otp, setOtp }) => {
         if (element.value && index < length - 1) {
             inputRefs.current[index + 1].focus();
         }
-
-        // Submit when all inputs are filled
-        // if (newOtp.join("").length === length) {
-        //     setOtp(newOtp.join(""));
-        // }
     };
 
     // Handle Backspace

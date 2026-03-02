@@ -17,7 +17,7 @@ const Home = () => {
                 <h3>Welcome back! Login or sign up to  </h3>
                 <h5>explore our secure system.</h5>
 
-                <img  src="https://www.svgrepo.com/show/274065/add-user-button.svg" alt="" />
+                <img src="https://www.svgrepo.com/show/274065/add-user-button.svg" alt="" />
 
                 <div className="btn-box" >
                     <button className="btn" onClick={signpage}>Sign-Up !</button>

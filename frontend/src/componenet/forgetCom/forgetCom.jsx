@@ -13,79 +13,63 @@ const ForgetCom = () => {
     const [show2, setshow2] = useState(false)
     const [newpass, setnewpass] = useState("");
     const [confirmpass, setconfirmpass] = useState("");
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-
-    const Backend_URL = "https://userauthentication-1-64yk.onrender.com"
+    const Backend_URL = import.meta.env.VITE_BACKEND_URL
 
     const getotp = async () => {
         try {
             if (!email) {
                 return (setoutput("Missing Gmail"));
             }
-
+            setLoading(true)
             const res = await axios.post(`${Backend_URL}/forget`, { email })
-            console.log(res.data)
             if (res.status == 200) {
-                setoutput(<p style={{ color: "green", width: "200px" }}>{res.data.msg}</p>)
+                setoutput(<p style={{ color: "green" }}>{res.data.msg}</p>)
                 setemail("")
+                setLoading(false)
                 setotpbox(true)
-            } else {
-                setoutput(<p style={{ color: "red", width: "200px" }}>{res.data.msg}</p>)
-
             }
 
-
-
         } catch (error) {
-            console.log(error);
+            setLoading(false)
             if (error.response) {
                 setoutput(
-                    <p style={{ color: "red", width: "200px" }}>
+                    <p style={{ color: "red" }}>
                         {error.response.data.msg || "Invalid otp"}
                     </p>
                 );
             } else {
-                setOutput(<p style={{ color: "red", width: "200px" }}>Server not responding</p>);
+                setoutput(<p style={{ color: "red" }}>Server not responding</p>);
             }
         }
-
-
     }
+
     const handleverify = async () => {
         try {
+            setLoading(true)
             const getemail = localStorage.getItem("email")
-            const forgetmood = true;
+            const isforgetMood = true;
             const getotp = otp.join("")
             const res = await axios.post(`${Backend_URL}/verify`,
-                { getotp, getemail, forgetmood }
+                { getotp, getemail, isforgetMood }
             )
             if (res.status == 200) {
-                setoutput(<p style={{ color: "red", width: "200px" }}> Reset Password</p>)
+                setoutput(<p style={{ color: "red" }}> Reset Password</p>)
+                setLoading(false)
                 setreset(true);
             }
-            else {
-                setoutput(<p style={{ color: "red", width: "200px" }}>{res.data.msg}</p>)
-            }
-
         } catch (error) {
-            console.log(error);
+            setLoading(false)
             if (error.response) {
-                setoutput(
-                    <p style={{ color: "red", width: "200px" }}>
-                        {error.response.data.msg || "Invalid OTP"}
-                    </p>
-                );
+                setoutput(<p style={{ color: "red" }}>{error.response.data.msg || "Invalid OTP"} </p>);
             } else {
-                setoutput(<p style={{ color: "red", width: "200px" }}>Server not responding</p>);
+                setoutput(<p style={{ color: "red" }}>Server not responding</p>);
             }
         }
-
-
-
     }
 
     const handlereset = async () => {
-
         try {
             if (!newpass && !confirmpass) {
                 return (setoutput("fill form"))
@@ -98,39 +82,31 @@ const ForgetCom = () => {
             }
             if (newpass !== confirmpass) {
                 return (setoutput("Not Match Password"))
-
-
             }
+            setLoading(true)
             const getemail = localStorage.getItem("email")
-
-            console.log(newpass, "and", confirmpass, "and", getemail)
             const res = await axios.post(`${Backend_URL}/reset`, { newpass, getemail })
-            console.log(res.data)
             if (res.status == 200) {
-                setoutput(<p style={{ color: "green", width: "200px" }}>{res.data.msg}</p>)
+                setoutput(<p style={{ color: "green" }}>{res.data.msg}</p>)
+                setLoading(false)
                 navigate("/login")
                 setconfirmpass("")
                 setnewpass("")
             }
 
-
         } catch (error) {
-            console.log(error);
+            setLoading(false)
             if (error.response) {
                 setoutput(
-                    <p style={{ color: "red", width: "200px" }}>
+                    <p style={{ color: "red" }}>
                         {error.response.data.msg || "Invalid OTP"}
                     </p>
                 );
             } else {
-                setoutput(<p style={{ color: "red", width: "200px" }}>Server not responding</p>);
+                setoutput(<p style={{ color: "red" }}>Server not responding</p>);
             }
-
         }
-
-
     }
-
 
     const handleshow1 = () => {
         setshow1(false)
@@ -147,75 +123,52 @@ const ForgetCom = () => {
 
     return (
         <>
-
-            <div className="forget-box">
-                {
-                    otpbox ? <>
-                        {
-                            reset ? <div className="forget-input-box" >
-                                <h3>Reset Your Password</h3>
-                                {
-                                    output ? <p style={{ color: "red", width: "200px" }}>{output}</p> : ""
-                                }
-                                <div style={{ position: "relative" }}>
-                                    <img onClick={show1 ? handleshow1 : handlehide1} src={show1 ? "https://www.svgrepo.com/show/380010/eye-password-show.svg" : "https://www.svgrepo.com/show/390427/eye-password-see-view.svg"} alt={show1 ? "show eye" : "hide eye"} />
-
-                                    <input type={show1 ? "text" : "password"} placeholder="new password" value={newpass} onChange={(e) => { setnewpass(e.target.value); setoutput(false) }} />
-
-
-                                </div>
-                                <div style={{ position: "relative" }}>
-                                    <img onClick={show2 ? handleshow2 : handlehide2} src={show2 ? "https://www.svgrepo.com/show/380010/eye-password-show.svg" : "https://www.svgrepo.com/show/390427/eye-password-see-view.svg"} alt={show2 ? "show eye" : "hide eye"} />
-                                    <input type={show2 ? "text" : "password"} placeholder="confirm password" value={confirmpass} onChange={(e) => { setconfirmpass(e.target.value); setoutput(false) }} />
-
-                                </div>
-                                <button className="btn" onClick={handlereset}>Reset Password</button>
-                            </div> :
-                                <>
-                                    <h4>OTP Sent Your Email</h4>
-                                    <OtpInput length={4} otp={otp} setOtp={setOtp} />
-                                    <button className="btn" onClick={handleverify}>Verify-OTP</button>
-                                </>
-
-                        }
-
-
-
-
-                    </>
-
-                        : <>
-                            <h2>forget Your Account</h2>
-                            <p>Join us today – it’s quick and easy!</p>
+            <section className="forget-section">
+                <div className="forget-box">
+                    {
+                        otpbox ? <>
                             {
-                                output ? <p style={{ color: "red" }}>{output}</p> : ""
+                                reset ? <div className="forget-input-box" >
+                                    <h3>Reset Your Password</h3>
+                                    {
+                                        output ? <p style={{ color: "red" }}>{output}</p> : ""
+                                    }
+                                    <div style={{ position: "relative" }}>
+                                        <img onClick={show1 ? handleshow1 : handlehide1} src={show1 ? "https://www.svgrepo.com/show/380010/eye-password-show.svg" : "https://www.svgrepo.com/show/390427/eye-password-see-view.svg"} alt={show1 ? "show eye" : "hide eye"} />
+                                        <input type={show1 ? "text" : "password"} placeholder="new password" value={newpass} onChange={(e) => { setnewpass(e.target.value); setoutput(false) }} />
+                                    </div>
+
+                                    <div style={{ position: "relative" }}>
+                                        <img onClick={show2 ? handleshow2 : handlehide2} src={show2 ? "https://www.svgrepo.com/show/380010/eye-password-show.svg" : "https://www.svgrepo.com/show/390427/eye-password-see-view.svg"} alt={show2 ? "show eye" : "hide eye"} />
+                                        <input type={show2 ? "text" : "password"} placeholder="confirm password" value={confirmpass} onChange={(e) => { setconfirmpass(e.target.value); setoutput(false) }} />
+                                    </div>
+
+                                    <button className="btn" onClick={handlereset}>{loading ? "Loading..." : "Reset Password"}</button>
+                                </div> :
+                                    <>
+                                        <h4>OTP Sent Your Email</h4>
+                                        <OtpInput length={4} otp={otp} setOtp={setOtp} />
+                                        <button className="btn" onClick={handleverify}>{loading ? "Loading..." : "Verify-OTP"}</button>
+                                    </>
                             }
-                            <div className="forget-input-box">
-
-                                <div className="forget-input-img">
-                                    <img src="https://www.svgrepo.com/show/511921/email-1573.svg" alt="" />
-                                    <input type="email" placeholder="Enter your Email" value={email} onChange={(e) => { setemail(e.target.value); setoutput(false) }} />
-                                </div>
-
-                                <button className="forget-btn" onClick={getotp}>Get OTP!</button>
-
-
-
-                            </div>
-
-
                         </>
-
-                }
-
-
-
-
-
-
-            </div>
-
-
+                            : <>
+                                <h2>forget Your Account</h2>
+                                <p>Join us today – it’s quick and easy!</p>
+                                {
+                                    output ? <p style={{ color: "red" }}>{output}</p> : ""
+                                }
+                                <div className="forget-input-box">
+                                    <div className="forget-input-img">
+                                        <img src="https://www.svgrepo.com/show/511921/email-1573.svg" alt="" />
+                                        <input type="email" placeholder="Enter your Email" value={email} onChange={(e) => { setemail(e.target.value); setoutput(false) }} />
+                                    </div>
+                                    <button className="forget-btn" onClick={getotp}>{loading ? "Loading..." : "Get OTP!"}</button>
+                                </div>
+                            </>
+                    }
+                </div>
+            </section>
         </>
     )
 }

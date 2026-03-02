@@ -1,9 +1,14 @@
-/* ================= FORGET MAIN BOX ================= */
+.forget-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .forget-box {
-    backdrop-filter: blur(50px);
+    box-shadow: 2px 2px 5px black;
     width: 100%;
-    max-width: 500px;
+    width: 500px;
     color: cyan;
     display: flex;
     flex-direction: column;
@@ -14,10 +19,9 @@
     box-sizing: border-box;
 }
 
-/* ================= INPUT SECTION ================= */
 
 .forget-input-box {
-    /* border: 2px solid red; */
+    width: 350px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -40,7 +44,7 @@
 .forget-input-box input {
     outline: none;
     width: 100%;
-    padding: 6px;
+    padding: 4px;
     background: transparent;
     border: 2px solid cyan;
     color: black;
@@ -51,7 +55,6 @@
     color: black;
 }
 
-/* ================= BUTTON ================= */
 
 .forget-btn {
     background: transparent;
@@ -67,15 +70,12 @@
     background-color: cyan;
 }
 
-/* ================= TEXT ================= */
 
 .forget-input-box p {
-    margin-top: -10px;
+    font-size: 16px;
     border-bottom: 1px solid cyan;
-    width: 120px;
 }
 
-/* ================= OTP SECTION ================= */
 
 .forget-otp-box {
     padding: 15px;
@@ -102,7 +102,6 @@
     margin: 0;
 }
 
-/* ================= TABLET ================= */
 
 @media (max-width: 768px) {
     .forget-box {
@@ -111,7 +110,7 @@
     }
 
     .forget-input-box {
-        max-width: 350px;
+        max-width: 300px;
     }
 
     .forget-input-img {
@@ -124,9 +123,6 @@
     }
 }
 
-/* ================= MOBILE ================= */
-
-/* ================= MOBILE FIXED ================= */
 
 @media (max-width: 480px) {
 
@@ -137,7 +133,7 @@
     }
 
     .forget-input-box {
-        width: 100%;
+        width: 90%;
         align-items: center;
     }
 
@@ -147,7 +143,8 @@
     }
 
     .forget-input-box input {
-        width: 100%; /* ❗ important */
+        width: 100%;
+        /* ❗ important */
         font-size: 14px;
         padding: 8px;
     }
