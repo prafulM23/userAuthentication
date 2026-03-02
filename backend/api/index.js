@@ -20,6 +20,10 @@ app.post("/verify", logic.verify)
 app.post("/reset", logic.reset)
 app.get("/read", logic.data)
 
+app.get("/", (req, res) => {
+    res.send("Server Running")
+})
+
 
 export default app
 
